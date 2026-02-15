@@ -30,8 +30,7 @@ app.post("/signup", async (req, res) => {
     await signupUser.save();
     res.send("signup successfully !");
   } catch (error) {
-    res.status(401).send(error.message)
-
+    res.status(401).send(error.message);
   }
 });
 
