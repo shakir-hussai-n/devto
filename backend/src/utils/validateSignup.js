@@ -9,7 +9,7 @@ if(!firstName ||!lastName){
 if(!gmail || !validator.isEmail(gmail)){
   throw new Error("Invalid gmail!");
 }
-if(!password || validator.isStrongPassword(password)){
+if(!password || !validator.isStrongPassword(password)){
 throw new Error("weak password !");
 }
 if(!gender || !["male","female","other"].includes(gender)){
