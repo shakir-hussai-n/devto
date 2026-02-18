@@ -2,6 +2,7 @@ const express = require("express");
 const connDB = require("./config/connDB");
 const useSchemaModels = require("./models/signupSchema");
 const validateSignup = require("./utils/validateSignup");
+const loginValidator = require("./utils/loginValidator");
 const bcrypt = require("bcrypt");
 
 const app = express();
@@ -33,6 +34,35 @@ app.post("/signup", async (req, res) => {
     res.status(401).send(error.message);
   }
 });
+
+
+app.post("/login",async(req,res)=>{
+  try{
+    //sanitize gmail and password;
+
+     loginValidator(req);
+    const{gmail,password}= req.body;
+
+    //Find user;
+    const isGmailValid = await useSchemaModels.findOne({gmail:gmail});
+    if(!isGmailValid){
+       return res.status(401).send("Invalid gmail and password");
+    };
+
+    //compare password;
+    const isPasswordValid = await  bcrypt.compare(password,isGmailValid.password);
+   
+     if(isPasswordValid){
+      return res.status(200).send("login successful!");
+     }else{
+      return res.status(401).send("Invalid gmail and password");
+     }
+
+
+  }catch(error){
+   res.status(400).send(error.message);
+  }
+})
 
 // startServer
 
