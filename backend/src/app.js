@@ -4,10 +4,14 @@ const useSchemaModels = require("./models/signupSchema");
 const validateSignup = require("./utils/validateSignup");
 const loginValidator = require("./utils/loginValidator");
 const bcrypt = require("bcrypt");
+const cookieParser = require("cookie-parser");
+const jwt = require("jsonwebtoken");
+const { userAuth } = require("./middleWares/userAuth");
 
 const app = express();
 
 app.use(express.json());
+app.use(cookieParser());
 
 app.post("/signup", async (req, res) => {
   try {
@@ -35,34 +39,49 @@ app.post("/signup", async (req, res) => {
   }
 });
 
-
-app.post("/login",async(req,res)=>{
-  try{
+app.post("/login", async (req, res) => {
+  try {
     //sanitize gmail and password;
 
-     loginValidator(req);
-    const{gmail,password}= req.body;
+    loginValidator(req);
+    const { gmail, password } = req.body;
 
     //Find user;
-    const isGmailValid = await useSchemaModels.findOne({gmail:gmail});
-    if(!isGmailValid){
-       return res.status(401).send("Invalid gmail and password");
-    };
+    const userData = await useSchemaModels.findOne({ gmail: gmail });
+    if (!userData) {
+      return res.status(401).send("Invalid gmail and password");
+    }
 
     //compare password;
-    const isPasswordValid = await  bcrypt.compare(password,isGmailValid.password);
-   
-     if(isPasswordValid){
+    const isPasswordValid = await userData.validatePwd(password);
+
+    if (isPasswordValid) {
+      //create jwt token;
+      const token = await userData.getJWT();
+
+      // add token into the cookie and send reponse back to the user;
+
+      res.cookie("token", token);
+
       return res.status(200).send("login successful!");
-     }else{
+    } else {
       return res.status(401).send("Invalid gmail and password");
-     }
-
-
-  }catch(error){
-   res.status(400).send(error.message);
+    }
+  } catch (error) {
+    res.status(400).send(error.message);
   }
-})
+});
+
+app.get("/profile", userAuth, async (req, res) => {
+  try {
+    const user = req.user;
+    console.log(user);
+
+    return res.send(user);
+  } catch (error) {
+    return res.status(401).send(error.message);
+  }
+});
 
 // startServer
 

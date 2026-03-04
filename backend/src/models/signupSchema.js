@@ -1,7 +1,9 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
-const crtSignUpSchema = new mongoose.Schema({
+const crtSchema = new mongoose.Schema({
 
   firstName:{
     type:String,
@@ -47,7 +49,20 @@ if(!["male","female","other"].includes(value)){
  }
 
 });
+crtSchema.methods.validatePwd = async function (inputPwd){
+const user = this;
+const isPwdValid = await bcrypt.compare(inputPwd,user.password);
+return isPwdValid;
 
-const useSchemaModels = mongoose.model("newdbs" ,crtSignUpSchema);
+}
+
+crtSchema.methods.getJWT = async function (){
+  const user = this;
+
+  const token = await jwt.sign({ _id: user.id }, "manYadav@123",{expiresIn: "1d"});
+  return token;
+}
+
+const useSchemaModels = mongoose.model("newdbs" ,crtSchema);
 
 module.exports = useSchemaModels;
