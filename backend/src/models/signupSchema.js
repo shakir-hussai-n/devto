@@ -54,7 +54,14 @@ const user = this;
 const isPwdValid = await bcrypt.compare(inputPwd,user.password);
 return isPwdValid;
 
+};
+
+crtSchema.methods.setPwd = async function(oldPwd){
+   const user = this;
+   const setNewPwd = await bcrypt.compare(oldPwd , user.password)
+ return setNewPwd;
 }
+
 
 crtSchema.methods.getJWT = async function (){
   const user = this;
