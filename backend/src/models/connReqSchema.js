@@ -1,0 +1,29 @@
+const mongoose = require("mongoose");
+
+const connReqSchema = new mongoose.Schema(
+  {
+    fromUserId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+    },
+    toUserId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+    },
+    status: {
+      type: String,
+      required: true,
+      enum: {
+        values: ["interested", "ignored", "accepted", "rejected"],
+        message: `{VALUE} this value is wrong`,
+      },
+    },
+  },
+  {
+    timestamps: true,
+  },
+);
+
+const connReqSchemaModel = mongoose.model("connreq", connReqSchema);
+
+module.exports = connReqSchemaModel;
