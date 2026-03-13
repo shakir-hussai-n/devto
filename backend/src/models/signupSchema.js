@@ -70,6 +70,8 @@ crtSchema.methods.getJWT = async function (){
   return token;
 }
 
+
+
 const useSchemaModels = mongoose.model("newdbs" ,crtSchema);
 
 module.exports = useSchemaModels;

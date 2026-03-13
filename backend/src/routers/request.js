@@ -10,6 +10,8 @@ sendConnectionRouter.post("/request/send/:status/:toUserId", userAuth, async (re
   const fromUserId = req.user._id;
   const toUserId = req.params.toUserId;
   const status = req.params.status;
+  console.log(fromUserId,toUserId)
+
 
 
   const toUser = await useSchemaModels.findById(toUserId);
