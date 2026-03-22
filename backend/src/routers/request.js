@@ -10,17 +10,16 @@ sendConnectionRouter.post("/request/send/:status/:toUserId", userAuth, async (re
   const fromUserId = req.user._id;
   const toUserId = req.params.toUserId;
   const status = req.params.status;
-  console.log(fromUserId,toUserId)
+  
 
 
-
-  const toUser = await useSchemaModels.findById(toUserId);
+  const toUser = await  useSchemaModels.findById(toUserId);
   console.log(toUser)
   if(!toUser){
     return res.status(401).send("user not exit!")
   }
 
-  const exitUserId = await connReqSchemaModel.findOne({
+  const exitUserId = await  connReqSchemaModel.findOne({
    $or:[
     {fromUserId,
       toUserId
@@ -50,7 +49,7 @@ sendConnectionRouter.post("/request/send/:status/:toUserId", userAuth, async (re
 
   });
 
-  const data = await connReq.save();
+  const data =  await connReq.save();
   res.json({
     message: "connection requested successful !", 
     data,
@@ -62,5 +61,63 @@ sendConnectionRouter.post("/request/send/:status/:toUserId", userAuth, async (re
  }
 });
 
+
+sendConnectionRouter.post("/request/review/:status/:requestId",userAuth,async(req,res)=>{
+
+
+  try{
+    
+  const loginUserId = req.user;
+  const {status,requestId} = req.params;
+
+  //validate status;
+  const allowedStatus = ["accepted","rejected"];
+
+  if(!allowedStatus.includes(status)){
+
+    return res.status(401).json({
+      message: "invalid status!"
+    })
+  };
+
+  // validate  reviewing user;
+
+  const reviewHandler = await connReqSchemaModel.findOne({
+    _id: requestId,
+    toUserId: loginUserId._id,
+    status: "interested"
+  });
+
+  console.log(reviewHandler)
+
+  if(!reviewHandler){
+    return res.status(404).json({
+      message: "file not there!"
+    })
+
+  };
+
+  //change the status;
+  reviewHandler.status = status;
+
+  // uploade the change info to database;
+
+  const getRewData = await reviewHandler.save();
+
+  // send response;
+
+  return res.status(200).json({
+    message: "you have accepted connection!",
+    data: getRewData,
+  })}catch(error){
+    return res.status(401).json({
+      message: "you have got error" + error,
+    })
+
+  }
+
+
+
+})
 
 module.exports = sendConnectionRouter;
