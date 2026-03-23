@@ -4,17 +4,20 @@ const cookieParser = require("cookie-parser")
 const authRouter = require("./routers/auth");
 const profileRouter = require("./routers/profile");
 const sendConnectionRouter = require("./routers/request")
+const userRouter = require("./routers/user")
 
 const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
 
+
  
 
 app.use("/",authRouter)
 app.use("/", profileRouter);
 app.use("/", sendConnectionRouter);
+app.use("/", userRouter);
 
 
 

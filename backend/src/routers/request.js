@@ -88,7 +88,6 @@ sendConnectionRouter.post("/request/review/:status/:requestId",userAuth,async(re
     status: "interested"
   });
 
-  console.log(reviewHandler)
 
   if(!reviewHandler){
     return res.status(404).json({
