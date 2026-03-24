@@ -25,14 +25,14 @@ const connReqSchema = new mongoose.Schema(
   },
 );
 
-connReqSchema.pre("save", function(next){
+connReqSchema.pre("save", function(){
   const validUser = this;
   
 
   if (validUser.fromUserId.equals(validUser.toUserId)) {
     return next(new Error("invalid connection !"));
   }
-  next();
+
 })
 
 const connReqSchemaModel = mongoose.model("connreq", connReqSchema);
