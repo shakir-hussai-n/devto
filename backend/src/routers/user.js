@@ -38,8 +38,10 @@ userRouter.get("/user/connection", userAuth, async (req,res)=>{
  try{ const logInUser = req.user;
 
   const user = await connReqSchemaModel.find({
-    toUserId: logInUser._id,
-    status: "accepted"
+    $or:[
+      {toUserId: logInUser._id, status: "accepted"},
+      {fromUserId:logInUser._id, status: "accepted"},
+    ]
   }).populate("fromUserId", "firstName lastName");
 
   res.json({
