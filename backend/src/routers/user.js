@@ -50,6 +50,11 @@ userRouter.get("/user/connection", userAuth, async (req, res) => {
 userRouter.get("/feed", userAuth, async (req, res) => {
   try {
     const logInUser = req.user;
+    // adding limits:
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1)* limit;
 
     // list of sender and receiver user;
 
@@ -79,7 +84,7 @@ console.log(strHideUser)
  const findUserList = await useSchemaModels
    .find({
      _id: { $nin: strHideUser },
-   }).select("firstName lastName");
+   }).select("firstName lastName").skip(skip).limit(limit);
 
 
 
