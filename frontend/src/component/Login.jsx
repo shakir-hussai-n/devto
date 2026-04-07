@@ -1,13 +1,29 @@
 import React from "react";
+import {useState} from "react";
+
+
+
+
 
 const Login = () => {
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const loginHandler = (event) =>{
+    event.preventDefault();
+   console.log(email,password)
+
+  }
+
   return (
     <>
       <div className="flex justify-center">
       <div className="card w-96 bg-base-300 card-xl shadow-sm my-5">
-        <div className="card-body">
+        <form  onSubmit = {loginHandler} className="card-body">
           <h2 className="card-title justify-center">Login</h2>
-          <div>
+          
+            <p>{email}</p>
             <label className="input validator join-item">
               <svg
                 className="h-[1em] opacity-50"
@@ -25,13 +41,15 @@ const Login = () => {
                   <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
                 </g>
               </svg>
-              <input type="email" placeholder="mail@site.com" required />
+              <input type="email" value = {email} placeholder="mail@site.com" required onChange = {(event)=>setEmail(event.target.value)}/>
             </label>
             <div className="validator-hint hidden">
               Enter valid email address
             </div>
-          </div>
+          
+            <p>{password}</p>
           <label className="input validator">
+              
             <svg
               className="h-[1em] opacity-50"
               xmlns="http://www.w3.org/2000/svg"
@@ -52,10 +70,13 @@ const Login = () => {
               type="password"
               required
               placeholder="Password"
+              value = {password}
               minLength="8"
               pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
               title="Must be more than 8 characters, including number, lowercase letter, uppercase letter"
+                onChange={(event) => setPassword(event.target.value)}
             />
+            
           </label>
           <p className="validator-hint hidden">
             Must be more than 8 characters, including
@@ -66,9 +87,9 @@ const Login = () => {
           </p>
 
           <div className="justify-center card-actions">
-            <button className="btn btn-primary">login</button>
+              <button type="submit" className="btn btn-primary">login</button>
           </div>
-        </div>
+        </form>
       </div>
       </div>
     </>
