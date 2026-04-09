@@ -1,20 +1,34 @@
 import React from "react";
 import {useState} from "react";
-
+import axios from "axios";
 
 
 
 
 const Login = () => {
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [gmail, setEmail] = useState("elonmusk@gmail.com");
+  const [password, setPassword] = useState("ELON@gmail.com1");
 
-  const loginHandler = (event) =>{
-    event.preventDefault();
-   console.log(email,password)
+  const loginHandler =  async(event) =>{
+ try{ 
+  event.preventDefault();
+   const res = await axios.post("http://localhost:3000/login",{
+    gmail,
+    password,
+  });
+   console.log("Response:", res.data);
+  
+
+
+}catch(error){
+       console.error(error);
+  }
+   
+  
 
   }
+  
 
   return (
     <>
@@ -23,7 +37,7 @@ const Login = () => {
         <form  onSubmit = {loginHandler} className="card-body">
           <h2 className="card-title justify-center">Login</h2>
           
-            <p>{email}</p>
+            <p>{gmail}</p>
             <label className="input validator join-item">
               <svg
                 className="h-[1em] opacity-50"
@@ -41,7 +55,7 @@ const Login = () => {
                   <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
                 </g>
               </svg>
-              <input type="email" value = {email} placeholder="mail@site.com" required onChange = {(event)=>setEmail(event.target.value)}/>
+              <input type="email" value = {gmail} placeholder="mail@site.com" required onChange = {(event)=>setEmail(event.target.value)}/>
             </label>
             <div className="validator-hint hidden">
               Enter valid email address
