@@ -16,7 +16,7 @@ const Login = () => {
    const res = await axios.post("http://localhost:3000/login",{
     gmail,
     password,
-  });
+  },{withCredentials: true});
    console.log("Response:", res.data);
   
 
