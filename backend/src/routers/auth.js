@@ -56,7 +56,10 @@ authRouter.post("/login", async (req, res) => {
 
       res.cookie("token", token);
 
-      return res.status(200).send("login successful!");
+      return res.status(200).json({
+        message: "login Successful",
+        data: userData,
+      });
     } else {
       return res.status(401).send("Invalid gmail and password");
     }
