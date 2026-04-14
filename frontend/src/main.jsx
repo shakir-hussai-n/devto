@@ -6,11 +6,12 @@ import store from "./redux/appStore.js";
 import App from "./App.jsx"
 import './index.css'
 import Login from './component/Login.jsx';
+import Feed from "./component/feed.jsx";
 
 
 
 const router = createBrowserRouter([{
-  path: "/", element: <App/>, children: [{path:"/login", element: <Login/>}]
+  path: "/", element: <App />, children: [{ path: "/login", element: <Login /> }, { path: "/feed", element: <Feed /> }]
 }])
 createRoot(document.getElementById('root')).render(
   <StrictMode>

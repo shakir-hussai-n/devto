@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 const NavBar = () => {
   const user = useSelector((store) => store.user);
+  
 
   return (
     <>
@@ -10,7 +11,7 @@ const NavBar = () => {
         </div>
         {user && (
           <div className="flex items-center gap-2">
-            <p>{user.data.firstName}</p>
+            <p>{user.firstName}</p>
           <div className="dropdown dropdown-end mx-5">
             <div
               tabIndex={0}
