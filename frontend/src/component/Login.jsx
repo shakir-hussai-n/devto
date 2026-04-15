@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 const Login = () => {
   const [gmail, setEmail] = useState("elonmusk@gmail.com");
   const [password, setPassword] = useState("ELON@gmail.com1");
+  const [error, setError] = useState("");
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -22,10 +24,11 @@ const Login = () => {
         },
         { withCredentials: true },
       );
-
-      dispatch(addUser(res.data));
+      console.log(res.data.data);
+      dispatch(addUser(res.data.data));
       return navigate("/feed");
     } catch (error) {
+      setError(error?.response?.data || "something wrong!");
       console.error(error);
     }
   };
@@ -34,10 +37,10 @@ const Login = () => {
     <>
       <div className="flex justify-center">
         <div className="card w-96 bg-base-300 card-xl shadow-sm my-5">
-          <form onSubmit={loginHandler} className="card-body">
+          <form onSubmit={loginHandler} className="card-body flex flex-col gap-4">
             <h2 className="card-title justify-center">Login</h2>
-
-            <p>{gmail}</p>
+            <div className="flex flex-col gap-1">
+            <label htmlFor="email" className="text-sm font-medium md">Email ID :</label>
             <label className="input validator join-item">
               <svg
                 className="h-[1em] opacity-50"
@@ -56,6 +59,7 @@ const Login = () => {
                 </g>
               </svg>
               <input
+                id="email"
                 type="email"
                 value={gmail}
                 placeholder="mail@site.com"
@@ -66,8 +70,9 @@ const Login = () => {
             <div className="validator-hint hidden">
               Enter valid email address
             </div>
-
-            <p>{password}</p>
+            </div>
+            <div className="flex flex-col gap-1">
+            <label htmlFor="password" className="text-sm font-medium">Password :</label>
             <label className="input validator">
               <svg
                 className="h-[1em] opacity-50"
@@ -91,6 +96,7 @@ const Login = () => {
                 </g>
               </svg>
               <input
+                id="password"
                 type="password"
                 required
                 placeholder="Password"
@@ -107,10 +113,12 @@ const Login = () => {
               At least one number <br />
               At least one lowercase letter <br />
               At least one uppercase letter
-            </p>
 
-            <div className="justify-center card-actions">
-              <button type="submit" className="btn btn-primary">
+            </p>
+            </div>
+            <div className="card-actions flex-col  gap-3 items-start">
+              <p className="text-red-500">{error}</p>
+              <button type="submit" className="btn btn-primary self-center">
                 login
               </button>
             </div>
