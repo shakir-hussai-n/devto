@@ -17,7 +17,6 @@ function App() {
       });
 
       dispatch(addUser(res.data));
-      console.log(res.data)
 
     } catch (error) {
       if (error.response?.status === 401) {
