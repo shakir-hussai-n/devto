@@ -8,8 +8,10 @@ import { addUser } from "./redux/userSlice.js";
 
 function App() {
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+
+
   const fetchUser = async () => {
     try {
       const res = await axios.get("http://localhost:3000/profile", {
@@ -19,13 +21,17 @@ function App() {
       dispatch(addUser(res.data));
 
     } catch (error) {
+
+
       if (error.response?.status === 401) {
         navigate("/login");
-      }
-      console.log(error);
+        return;
+      };
+
+      console.error(error);
 
 
-    } 
+    }
   };
 
   useEffect(() => {

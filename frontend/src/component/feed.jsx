@@ -1,38 +1,34 @@
 import axios from "axios";
-
-
-
-
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { addFeed } from "../redux/feedSlice";
+import { useSelector } from "react-redux";
+import UserCard from "./UserCard";
 
 const Feed = () => {
 
+  const dispatch = useDispatch();
+  const feed = useSelector(store => store.feed);
+
   const getFeed = async () => {
-    const res = await axios.get("http://localhost:3000/feed?page=1&limit=2", { withCredentials: true });
+
+    try {
+      const fetchFeed = await axios.get("http://localhost:3000/feed?page=1&limit=3", { withCredentials: true });
+      dispatch(addFeed(fetchFeed.data));
+
+    } catch (error) {
+      console.error(error);
+    }
 
   }
+  useEffect(() => {
+    getFeed();
+  }, []);
+
+
   return (
     <>
-      <div className="card bg-base-100 w-96 shadow-sm m-4">
-        <figure>
-          <img
-            src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-            alt="Shoes"
-          />
-        </figure>
-        <div className="card-body">
-          <h2 className="card-title">
-            <div className="badge badge-secondary">NEW</div>
-          </h2>
-          <p>
-            A card component has a figure, a body part, and inside body there
-            are title and actions parts
-          </p>
-          <div className="card-actions justify-end">
-            <div className="badge badge-outline">Fashion</div>
-            <div className="badge badge-outline">Products</div>
-          </div>
-        </div>
-      </div>
+      {feed && ( <div className="flex justify-center" ><UserCard  data={feed[2]} /></div>)}
     </>
   );
 };

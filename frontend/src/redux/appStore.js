@@ -4,8 +4,7 @@ import feedReducer from "./feedSlice";
 
 
 const store = configureStore({
-  reducer: {user: userReducer},
-  reducer: { feed: feedReducer},
+  reducer: {user: userReducer,feed: feedReducer},
 })
 
 export default store;
