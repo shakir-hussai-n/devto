@@ -7,11 +7,12 @@ import App from "./App.jsx"
 import './index.css'
 import Login from './component/Login.jsx';
 import Feed from "./component/feed.jsx";
+import Profile from "./component/Profile.jsx";
 
 
 
 const router = createBrowserRouter([{
-  path: "/", element: <App />, children: [{ path: "/login", element: <Login /> }, { path: "/feed", element: <Feed /> }]
+  path: "/", element: <App />, children: [{ path: "/login", element: <Login /> }, { path: "/feed", element: <Feed /> },{path: "/profile", element: <Profile/>}]
 }])
 createRoot(document.getElementById('root')).render(
   <StrictMode>
