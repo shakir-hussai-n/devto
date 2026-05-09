@@ -54,6 +54,9 @@ const NavBar = () => {
                   </Link>
                 </li>
                 <li>
+                  <Link to="/friends">Friends</Link>
+                </li>
+                <li>
                   <a>Settings</a>
                 </li>
                 <li>
